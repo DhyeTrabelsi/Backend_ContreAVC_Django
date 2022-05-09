@@ -20,16 +20,23 @@ Marié = (
 class User(AbstractUser):
     is_medecine=models.BooleanField(default=False)
     is_patient=models.BooleanField(default=False)
+    
+class Adminstrateur(models.Model):
+    username= models.CharField(max_length=30,primary_key=True, default='')   
+    password= models.CharField(max_length=255)
+    
+    REQUIRED_FIELDS = [username,password]
 
-  
-
+    def __str__(self):
+        return self.username
+    
 class Medecine(models.Model):
     username= models.CharField(max_length=30,primary_key=True, default='')   
     password= models.CharField(max_length=255)
-    first_name=models.CharField(max_length=12, null=True, blank=True)
-    last_name=models.CharField(max_length=100, null=True, blank=True)
+    first_name=models.CharField(max_length=12, null=True)
+    last_name=models.CharField(max_length=100, null=True)
     email   = models.EmailField()
-    telephone=models.CharField(max_length=12, null=True, blank=True)
+    telephone=models.CharField(max_length=12, null=True)
     REQUIRED_FIELDS = [username,password,first_name,last_name,email,telephone]
 
     def __str__(self):
@@ -49,6 +56,7 @@ class Patient(models.Model):
     ever_married= models.CharField(max_length = 3, choices = Marié, default = 'Non')
     smoking_status=models.CharField(max_length =12 , choices = Smoking, default = 'Inconnu')
     stroke=models.IntegerField(null=True, blank=True,default=0)
+    medecine= models.ForeignKey(Medecine, on_delete=models.CASCADE, null=True)
     REQUIRED_FIELDS = [username,password,firstname,lastname,email,telephone,gender]
 
     def __str__(self):
