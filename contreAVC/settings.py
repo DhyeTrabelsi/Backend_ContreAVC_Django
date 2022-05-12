@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ubp_9b1$ll2shphf1hx(07-kibnvv#a)%vyjb089qskjw83%uz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,8 +40,7 @@ INSTALLED_APPS = [
     'Auth',
     'Demandes',
     'rest_framework',
-    'rest_framework.authtoken'
-
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -52,6 +51,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = 'contreAVC.urls'
@@ -73,7 +74,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'contreAVC.wsgi.application'
-
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

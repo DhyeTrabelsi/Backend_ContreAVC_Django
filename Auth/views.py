@@ -1,4 +1,5 @@
 
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.views import APIView
@@ -7,7 +8,7 @@ from Auth.models import Adminstrateur, Patient,Medecine
 from .serializers import  AdminstrateurSerializer, MedecineSerializer, PatientSerializer
 from rest_framework.generics import (ListCreateAPIView)
 
-class MedecineSignupView(APIView):
+class MedecineSignupView(generics.GenericAPIView):
     serializer_class=MedecineSerializer
     def post(self, request, *args, **kwargs):
         serializer=self.get_serializer(data=request.data)
@@ -16,7 +17,7 @@ class MedecineSignupView(APIView):
         return Response({
             "message":"account created successfully"
         })
-class PatientSignupView(APIView):
+class PatientSignupView(generics.GenericAPIView):
     serializer_class=PatientSerializer
     def post(self, request, *args, **kwargs):
         serializer=self.get_serializer(data=request.data)
