@@ -3,7 +3,7 @@ from Auth.models import *
 # Create your models here.
 
 class Demande(models.Model):
-    patient    = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    patient    = models.ForeignKey(Patient, on_delete=models.CASCADE,unique=True)
     medecine    = models.ForeignKey(Medecine, on_delete=models.CASCADE)
     resultat = models.BooleanField(null=True)
     def __str__(self):

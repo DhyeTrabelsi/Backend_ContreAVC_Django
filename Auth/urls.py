@@ -5,10 +5,15 @@ from rest_framework.authtoken import views
 from .views import (
 AdminstrateurLoginView,
 MedecineDefineAll,
+MedecineDelete,
 MedecineLoginView,
 MedecineSignupView,
+MedecineUpdate,
 PatientDefineAll,
+PatientDefineMed,
+PatientDelete,
 PatientLoginView,
+PatientReponse,
 PatientSignupView,
 PatientUpdate,
 )
@@ -21,7 +26,12 @@ urlpatterns=[
     path('login/medecine/', MedecineLoginView.as_view()),
     path('patient/list/', PatientDefineAll.as_view()),
     path('medecine/list/', MedecineDefineAll.as_view()),
-    path('update/', PatientUpdate.as_view()),
+    path('patient/listmed/<str:pk>/', PatientDefineMed.as_view()),
+    path('update/patient/', PatientUpdate.as_view()),
+    path('update/medecine/', MedecineUpdate.as_view()),
+    path('reponse/patient/', PatientReponse.as_view()),
+    path('delete/medecine/<str:pk>/', MedecineDelete.as_view()),
+    path('delete/patient/<str:pk>/', PatientDelete.as_view()),
     path('api-token-auth/', views.obtain_auth_token)
 
 

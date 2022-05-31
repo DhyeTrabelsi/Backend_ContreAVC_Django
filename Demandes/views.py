@@ -1,14 +1,11 @@
-from urllib import response
 from django.shortcuts import get_object_or_404, render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from Demandes.models import Demande
 from rest_framework.generics import (ListAPIView,ListCreateAPIView)
-
+from rest_framework import generics
 from Demandes.serializers import DemandeSerializer
-
 # Create your views here.
-
 class PatientDemande(APIView):
     def post(self, request, *args, **kwargs):
        
@@ -41,6 +38,20 @@ class DemandeRetrieve(ListAPIView):
     serializer_class =DemandeSerializer
     def get_queryset(self):
         return Demande.objects.filter(id=self.kwargs.get('pk', None)) 
+
+class DemandeRemove(APIView):
+   def delete(self, request, *args, **kwargs):
+        demande= Demande.objects.filter(id=self.kwargs.get('pk', None)) 
+        demande.delete()
+        return Response({'message': 'Demande was deleted successfully!'})
+
+
+
+class DemandeRetrievemed(ListAPIView):
+    serializer_class =DemandeSerializer
+    def get_queryset(self):
+        return Demande.objects.filter(medecine=self.kwargs.get('pk', None)) 
+
 
 class DemandeReponse(APIView):
    def patch(self, request, *args, **kwargs):

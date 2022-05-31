@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from Auth.models import Adminstrateur, Patient,Medecine
 from .serializers import  AdminstrateurSerializer, MedecineSerializer, PatientSerializer
-from rest_framework.generics import (ListCreateAPIView)
+from rest_framework.generics import (ListCreateAPIView,RetrieveUpdateAPIView)
 
 class MedecineSignupView(generics.GenericAPIView):
     serializer_class=MedecineSerializer
@@ -17,6 +17,7 @@ class MedecineSignupView(generics.GenericAPIView):
         return Response({
             "message":"account created successfully"
         })
+        
 class PatientSignupView(generics.GenericAPIView):
     serializer_class=PatientSerializer
     def post(self, request, *args, **kwargs):
@@ -92,23 +93,42 @@ class MedecineDefineAll(ListCreateAPIView):
         pagination_class = None
         Medecine.objects       
 
+class PatientDefineMed(ListCreateAPIView):
+      serializer_class =PatientSerializer
+      def get_queryset(self):
+            return Patient.objects.filter(medecine=self.kwargs.get('pk', None))      
+
 
 class PatientUpdate(APIView):
    def patch(self, request, *args, **kwargs):
         username= request.data['username']
         patient = Patient.objects.get(username=username)
         data = request.data
-        patient.stroke = data.get("email", patient.email)
-        patient.stroke = data.get("password", patient.password)
-        patient.stroke = data.get("lastname", patient.lastname)
-        patient.stroke = data.get("firstname", patient.firstname)
-        patient.stroke = data.get("telephone", patient.telephone)
-        patient.stroke = data.get("avg_glucose_level", patient.avg_glucose_level)
-        patient.stroke = data.get("bmi", patient.bmi)
-        patient.stroke = data.get("ever_married", patient.ever_married)
-        patient.stroke = data.get("smoking_status", patient.smoking_status)
-        patient.stroke = data.get("medecine", patient.medecine)        
-        patient.stroke = data.get("stroke", patient.stroke)
+     
+
+        patient.username = data.get("username", patient.username)
+        patient.email = data.get("email", patient.email)
+        patient.password = data.get("password", patient.password)
+        patient.lastname = data.get("lastname", patient.lastname)
+        patient.firstname = data.get("firstname", patient.firstname)
+        patient.telephone = data.get("telephone", patient.telephone)
+        patient.postion = data.get("postion", patient.postion)
+
+        patient.ever_married = data.get("ever_married", patient.ever_married)
+        patient.type_de_travail = data.get("type_de_travail", patient.type_de_travail)
+
+        patient.save()
+        serializer = PatientSerializer(patient)
+        return Response(serializer.data)
+
+class PatientReponse(APIView):
+   def patch(self, request, *args, **kwargs):
+        username= request.data['username']
+        medecine= request.data['medecine']
+        patient = Patient.objects.get(username=username)
+        data = request.data
+        patient.username = data.get("username", patient.username)
+        patient.medecine =  Medecine.objects.get(username=medecine)
         patient.save()
         serializer = PatientSerializer(patient)
         return Response(serializer.data)
@@ -116,13 +136,29 @@ class PatientUpdate(APIView):
 class MedecineUpdate(APIView):
    def patch(self, request, *args, **kwargs):
         username= request.data['username']
-        patient = Medecine.objects.get(username=username)
+        medecine = Medecine.objects.get(username=username)
         data = request.data
-        patient.stroke = data.get("email", patient.email)
-        patient.stroke = data.get("password", patient.password)
-        patient.stroke = data.get("lastname", patient.lastname)
-        patient.stroke = data.get("firstname", patient.firstname)
-        patient.stroke = data.get("telephone", patient.telephone)
-        patient.save()
-        serializer = MedecineSerializer(patient)
+        
+        medecine.username = data.get("username", medecine.username)
+        medecine.email = data.get("email", medecine.email)
+        medecine.password = data.get("password", medecine.password)
+        medecine.last_name = data.get("last_name", medecine.last_name)
+        medecine.first_name = data.get("first_name", medecine.first_name)
+        medecine.postion = data.get("postion", medecine.postion)
+        medecine.telephone = data.get("telephone", medecine.telephone)
+        medecine.save()
+        serializer = MedecineSerializer(medecine)
+
         return Response(serializer.data)
+
+class MedecineDelete(APIView):
+   def delete(self, request, *args, **kwargs):
+        medecine=Medecine.objects.filter(username=self.kwargs.get('pk', None)) 
+        medecine.delete() 
+        return Response({'message': 'Medecine was deleted successfully!'})
+
+class PatientDelete(APIView):
+   def delete(self, request, *args, **kwargs):
+        patient=Patient.objects.filter(username=self.kwargs.get('pk', None)) 
+        patient.delete() 
+        return Response({'message': 'Patient was deleted successfully!'})
