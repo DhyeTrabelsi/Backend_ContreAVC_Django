@@ -58,16 +58,17 @@ class Patient(models.Model):
     postion=models.CharField(max_length=60, null=True, blank=True)
     birthday = models.DateField(null=False,default=date.today)
     gender = models.CharField(max_length = 6, choices = GENDER, default = 'Male')
-    poids=models.FloatField(null=True, blank=True,default=0)
+    poids=models.JSONField(null=True, blank=True,default=0)
 
-    avg_glucose_level=models.FloatField(null=True, blank=True,default=0)
-    hypertension=models.IntegerField(null=True, blank=True,default=0)
-    heart_disease=models.FloatField(null=True, blank=True,default=0)
+    avg_glucose_level=models.JSONField(null=True, blank=True)
+    hypertension=models.JSONField(null=True, blank=True)
+    heart_disease=models.JSONField(null=True, blank=True)
     type_de_travail= models.CharField(max_length = 19, choices = travail, default = 'Pas encore', null=True, blank=True)
-    bmi=models.FloatField(null=True, blank=True,default=0)
+    bmi=models.JSONField(null=True, blank=True)
     ever_married= models.CharField(max_length = 3, choices = Marié, default = 'Non', null=True, blank=True)
     smoking_status=models.CharField(max_length =19 , choices = Smoking, default = 'Inconnu', null=True, blank=True)
     stroke=models.IntegerField(null=True, blank=True,default=0)
+    notifier=models.IntegerField(null=True, blank=True,default=0)
 
     medecine= models.ForeignKey(Medecine, on_delete=models.CASCADE, null=True, blank=True)
 

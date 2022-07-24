@@ -13,6 +13,7 @@ PatientDefineAll,
 PatientDefineMed,
 PatientDelete,
 PatientLoginView,
+PatientNotifier,
 PatientReponse,
 PatientSignupView,
 PatientUpdate,
@@ -32,7 +33,10 @@ urlpatterns=[
     path('reponse/patient/', PatientReponse.as_view()),
     path('delete/medecine/<str:pk>/', MedecineDelete.as_view()),
     path('delete/patient/<str:pk>/', PatientDelete.as_view()),
-    path('api-token-auth/', views.obtain_auth_token)
+    path('api-token-auth/', views.obtain_auth_token),
+    path('notifier/patient/', PatientNotifier.as_view()),
+
+
 
 
 ]

@@ -49,7 +49,7 @@ class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model=Patient
         fields=['username','email','password','firstname','lastname','telephone','birthday','gender','poids','postion','medecine',
-        'avg_glucose_level','bmi','ever_married','smoking_status','stroke','hypertension','heart_disease','type_de_travail']       
+        'avg_glucose_level','bmi','ever_married','smoking_status','stroke','hypertension','heart_disease','type_de_travail','notifier']       
         extra_kwargs={
             'password':{'write_only':True}
         }
@@ -75,6 +75,7 @@ class PatientSerializer(serializers.ModelSerializer):
             heart_disease=self.validated_data['heart_disease'],
             hypertension=self.validated_data['hypertension'],
             stroke=self.validated_data['stroke'],
+            notifier=self.validated_data['notifier'],
 
           
 

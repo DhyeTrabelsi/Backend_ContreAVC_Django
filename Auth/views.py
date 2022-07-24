@@ -33,7 +33,6 @@ class AdminstrateurLoginView(APIView):
     def post(self, request):
         login= request.data['username']
         password = request.data['password']
-
         admin = Adminstrateur.objects.filter(username=login).first()
         if admin is None:
             raise AuthenticationFailed('admin not found!')
@@ -97,6 +96,18 @@ class PatientDefineMed(ListCreateAPIView):
       serializer_class =PatientSerializer
       def get_queryset(self):
             return Patient.objects.filter(medecine=self.kwargs.get('pk', None))      
+
+class PatientNotifier(APIView):
+   def patch(self, request, *args, **kwargs):
+        username= request.data['username']
+        patient = Patient.objects.get(username=username)
+        data = request.data
+     
+        patient.username = data.get("username", patient.username)
+        patient.notifier = data.get("notifier", patient.notifier)
+        patient.save()
+        serializer = PatientSerializer(patient)
+        return Response(serializer.data)
 
 
 class PatientUpdate(APIView):
